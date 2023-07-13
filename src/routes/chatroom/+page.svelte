@@ -73,9 +73,8 @@
 			<form
 				use:enhance
 				method="POST"
-				class="input-group input-group-divider grid-cols-[auto_1fr_auto] rounded-container-token"
+				class="input-group input-group-divider grid-cols-[1fr_auto] rounded-container-token"
 			>
-				<button type="submit" class="input-group-shim">Message</button>
 				<textarea
 					class="bg-transparent border-0 ring-0"
 					name="text"
