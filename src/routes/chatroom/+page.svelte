@@ -17,7 +17,11 @@
 	let unsub: () => void;
 	onMount(async () => {
 		unsub = await pb.collection('messages').subscribe('*', async ({ action, record }) => {
-			if (action === 'create') messages = [...messages, record];
+			if(action === 'create'){
+                const user = await pb.collection('users').getOne(record.user);
+                record.expand = {user}
+                messages = [...messages,record]
+            }
 			if (action === 'delete') messages = messages.filter((m) => m.id !== record.id);
 			if (action === 'update') {
 				messages = messages.map((item) => {
