@@ -3,7 +3,7 @@
 	import type { PageData } from './$types';
 	import Fa from 'svelte-fa';
 	import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-	import { Avatar } from '@skeletonlabs/skeleton';
+	import { Avatar,focusTrap } from '@skeletonlabs/skeleton';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import { pb } from '$lib/pb';
 	const scrollToBottom = async (node: HTMLDivElement) => {
@@ -17,11 +17,11 @@
 	let unsub: () => void;
 	onMount(async () => {
 		unsub = await pb.collection('messages').subscribe('*', async ({ action, record }) => {
-			if(action === 'create'){
-                const user = await pb.collection('users').getOne(record.user);
-                record.expand = {user}
-                messages = [...messages,record]
-            }
+			if (action === 'create') {
+				const user = await pb.collection('users').getOne(record.user);
+				record.expand = { user };
+				messages = [...messages, record];
+			}
 			if (action === 'delete') messages = messages.filter((m) => m.id !== record.id);
 			if (action === 'update') {
 				messages = messages.map((item) => {
@@ -39,13 +39,23 @@
 		unsub?.();
 	});
 
+	afterUpdate(() => {
+		if (messages) {
+			scrollToBottom(element);
+		}
+	});
+	
 	$: if (messages && element) {
 		scrollToBottom(element);
 	}
 </script>
 
 <div class="h-full grid grid-rows-[1fr_auto] gap-1">
-	<div bind:this={element} class="max-h-[560px] p-4 overflow-y-auto space-y-4">
+	<div
+		bind:this={element}
+		on:keydown={(event) => event.key != 'Enter'}
+		class="max-h-[560px] p-4 overflow-y-auto space-y-4"
+	>
 		{#each messages as msg (msg.id)}
 			{#if msg.expand?.user?.username == data.currentUser.username}
 				<div class="grid grid-cols-[auto_1fr] gap-2">
@@ -89,19 +99,19 @@
 	<div class="bg-surface-500/30 p-4">
 		{#if !data.banned}
 			<form
+				use:focusTrap={true}
 				use:enhance
 				method="POST"
 				class="input-group input-group-divider grid-cols-[1fr_auto] rounded-container-token"
 			>
-				<textarea
-					class="bg-transparent border-0 ring-0"
+				<input
+					class="bg-transparent input border-0 ring-0"
 					name="text"
+					type="text"
 					required
 					bind:value={$form.text}
 					placeholder={$errors.text ? '' + $errors.text : 'Write a message...'}
-					rows="1"
 				/>
-				<input type="text" class="hidden" bind:value={data.currentUser.id} />
 				<button type="submit" class="variant-filled-primary space-x-2"
 					><Fa icon={faPaperPlane} /><span>Send</span></button
 				>

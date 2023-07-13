@@ -3,7 +3,6 @@ import type { PageServerLoad } from './$types';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { msgschema } from '$lib/validation';
 import { ClientResponseError } from 'pocketbase';
-import { censorBadWords, hasBadWord } from '$lib/utils';
 
 export const config = {
     runtime: 'edge',
@@ -39,18 +38,6 @@ export const actions = {
             return fail(400, { form })
         }
         else {
-            if (await hasBadWord(form.data.text)) {
-                const user = await event.locals.pb.collection('users').getOne(event.locals.user.id)
-                try {
-
-                    await event.locals.pb.collection('users').update(event.locals.user.id, { swear: (user.swear as number) + 1 })
-
-                }
-                catch (_) {
-                    await event.locals.pb.collection('users').update(event.locals.user.id, { banned: true })
-                }
-                form.data.text = await censorBadWords(form.data.text)
-            }
             try {
                 const NewMsg: messages = { text: form.data.text, user: event.locals.user.id, like: 0, dislike: 0 }
                 await event.locals.pb.collection('messages').create(NewMsg)

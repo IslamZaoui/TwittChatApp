@@ -1,10 +1,8 @@
 import type { PageServerLoad, Actions } from './$types';
 import { regschema } from '$lib/validation';
 import { fail, redirect } from '@sveltejs/kit';
-import { message, setError, superValidate } from 'sveltekit-superforms/server'
+import { message, superValidate } from 'sveltekit-superforms/server'
 import { ClientResponseError } from 'pocketbase';
-import { hasBadWord } from '$lib/utils';
-import { pb } from '$lib/pb';
 
 export const config = {
     runtime: 'edge',
@@ -28,9 +26,6 @@ export const actions = {
             return fail(400, { form })
         }
         else {
-            if(await hasBadWord(form.data.username)){
-                return setError(form, 'username', 'this username is inappropriate')
-            }
             try {
                 await event.locals.pb.collection('users').create(form.data)
                 await event.locals.pb.collection('users').authWithPassword(form.data.email, form.data.password)
