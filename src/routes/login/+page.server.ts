@@ -3,6 +3,7 @@ import type { PageServerLoad,Actions } from './$types';
 import { logschema } from '$lib/validation';
 import { fail, redirect } from '@sveltejs/kit';
 import { ClientResponseError } from 'pocketbase';
+import { pb } from '$lib/pb';
 
 export const config = {
     runtime: 'edge',
@@ -27,7 +28,7 @@ export const actions = {
         }
         else {
             try {
-                await event.locals.pb?.collection('users').authWithPassword(form.data.email, form.data.password)
+                await pb.collection('users').authWithPassword(form.data.email, form.data.password)
             }
             catch (error) {
                 if (error instanceof ClientResponseError) {

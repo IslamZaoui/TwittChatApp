@@ -4,6 +4,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { message, setError, superValidate } from 'sveltekit-superforms/server'
 import { ClientResponseError } from 'pocketbase';
 import { hasBadWord } from '$lib/utils';
+import { pb } from '$lib/pb';
 
 export const config = {
     runtime: 'edge',
@@ -31,8 +32,8 @@ export const actions = {
                 return setError(form, 'username', 'this username is inappropriate')
             }
             try {
-                await event.locals.pb?.collection('users').create(form.data)
-                await event.locals.pb?.collection('users').authWithPassword(form.data.email, form.data.password)
+                await pb.collection('users').create(form.data)
+                await pb.collection('users').authWithPassword(form.data.email, form.data.password)
             }
             catch (error) {
                 if (error instanceof ClientResponseError) {
