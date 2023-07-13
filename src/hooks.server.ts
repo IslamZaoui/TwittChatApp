@@ -1,35 +1,29 @@
-import { serializeNonPOJOs } from '$lib/utils';
 import type { Handle } from '@sveltejs/kit';
-import { pb } from '$lib/pb';
+import PocketBase from 'pocketbase';
 import { env } from '$env/dynamic/public';
-import PocketBase from 'pocketbase'
 
 export const handle: Handle = async ({ event, resolve }) => {
-	event.locals.pb = new PocketBase(env.PUBLIC_POCKETBASE_URL)
+	event.locals.pb = new PocketBase(env.PUBLIC_POCKETBASE_URL);
+	
 	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
 
 	try {
-		// get an up-to-date auth store state by veryfing and refreshing the loaded auth model (if any)
 		if (event.locals.pb.authStore.isValid) {
 			await event.locals.pb.collection('users').authRefresh();
-			await pb.collection('users').authRefresh();
-		}
-	} catch (_) {
-		// clear the auth store on failed refresh
-		event.locals.pb.authStore.clear();
-		pb.authStore.clear()
-	}
 
-	if (event.locals.pb.authStore.isValid) {
-		event.locals.user = serializeNonPOJOs(event.locals.pb.authStore.model);
-	} else {
-		event.locals.user = undefined;
+			event.locals.user = structuredClone(event.locals.pb.authStore.model);
+		}
+	} catch (err) {
+		event.locals.pb.authStore.clear();
 	}
 
 	const response = await resolve(event);
 
-	// TODO: secure before deployment
-	response.headers.set('set-cookie', event.locals.pb.authStore.exportToCookie({ secure: false }));
+	const isProd = process.env.NODE_ENV === 'production' ? true : false;
+	response.headers.set(
+		'set-cookie',
+		event.locals.pb.authStore.exportToCookie({ secure: isProd, sameSite: 'Lax' })
+	);
 
 	return response;
 };
