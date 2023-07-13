@@ -1,29 +1,39 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms/client';
-	import type { ActionData, PageData } from './$types';
+	import type { PageData } from './$types';
 	import Fa from 'svelte-fa';
 	import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 	import { Avatar } from '@skeletonlabs/skeleton';
-	import { afterUpdate } from 'svelte';
-
-	export let data: PageData;
-	export let action: ActionData;
-	$: messages = action?.messages ?? data.messages;
-	const { form, errors, enhance, message } = superForm(data.form);
-	let element: HTMLDivElement;
-
-	// Either afterUpdate()
-	afterUpdate(() => {
-		if (messages) scrollToBottom(element);
-	});
-
-	$: if (messages && element) {
-		scrollToBottom(element);
-	}
-
+	import { afterUpdate, onDestroy, onMount } from 'svelte';
+	import { pb } from '$lib/pb';
 	const scrollToBottom = async (node: HTMLDivElement) => {
 		node.scroll({ top: node.scrollHeight, behavior: 'smooth' });
 	};
+	let element: HTMLDivElement;
+	export let data: PageData;
+	let messages = data.messages;
+	
+	const { form, errors, enhance, message } = superForm(data.form);
+	let unsub1: () => void;
+	onMount(async () => {
+		unsub1 = await pb.collection('messages').subscribe('*', async ({ action, record }) => {
+			if (action === 'create') messages = [...messages, record];
+			if (action === 'delete') messages = messages.filter((m) => m.id !== record.id);
+			if (action === 'update') {
+				messages = messages.map((item) => {
+					if (item.id === record.id) {
+						return { ...item, ...record };
+					}
+					return item;
+				});
+			}
+			scrollToBottom(element);
+		});
+	});
+
+	onDestroy(()=>{
+		unsub1?.()
+	})
 </script>
 
 <div class="h-full grid grid-rows-[1fr_auto] gap-1">

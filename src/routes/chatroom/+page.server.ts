@@ -63,20 +63,8 @@ export const actions = {
                     });
                 }
             }
-            let messages: any[] = []
-            try {
-                const list = await event.locals.pb?.collection('messages').getList(1, 50, {
-                    sort: 'created',
-                    expand: 'user'
-
-                })
-                messages = list.items
-            }
-            catch (error) {
-                messages = []
-            }
             form.data.text = ""
-            return { form, messages: messages.map((msg) => msg.export()) }
+            return { form}
         }
     }
 } satisfies Actions
