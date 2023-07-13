@@ -4,6 +4,10 @@ import { logschema } from '$lib/validation';
 import { fail, redirect } from '@sveltejs/kit';
 import { ClientResponseError } from 'pocketbase';
 
+export const config = {
+    runtime: 'edge',
+  };
+
 export const load = (async (event) => {
     await event.parent()
     if (event.locals.pb?.authStore.isValid) {

@@ -5,6 +5,10 @@ import { message, setError, superValidate } from 'sveltekit-superforms/server'
 import { ClientResponseError } from 'pocketbase';
 import { hasBadWord } from '$lib/utils';
 
+export const config = {
+    runtime: 'edge',
+  };
+
 export const load = (async (event) => {
     await event.parent()
     if (event.locals.pb?.authStore.isValid) {

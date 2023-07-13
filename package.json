@@ -46,6 +46,7 @@
 	"dependencies": {
 		"@fortawesome/free-brands-svg-icons": "^6.4.0",
 		"@fortawesome/free-solid-svg-icons": "^6.4.0",
+		"@sveltejs/adapter-vercel": "^3.0.2",
 		"obscenity": "^0.1.4",
 		"pocketbase": "^0.15.2",
 		"svelte-french-toast": "^1.1.0",

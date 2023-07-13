@@ -5,8 +5,10 @@ import { msgschema } from '$lib/validation';
 import { ClientResponseError } from 'pocketbase';
 import { censorBadWords, hasBadWord } from '$lib/utils';
 
-export const ssr = true;
-
+export const config = {
+    runtime: 'edge',
+  };
+  
 export const load = (async (event) => {
     await event.parent()
     if (!event.locals.pb?.authStore.isValid) {
