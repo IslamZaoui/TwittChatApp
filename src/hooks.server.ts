@@ -1,9 +1,11 @@
 import { serializeNonPOJOs } from '$lib/utils';
 import type { Handle } from '@sveltejs/kit';
 import { pb } from '$lib/pb';
+import { env } from '$env/dynamic/public';
+import PocketBase from 'pocketbase'
 
 export const handle: Handle = async ({ event, resolve }) => {
-	event.locals.pb = pb
+	event.locals.pb = new PocketBase(env.PUBLIC_POCKETBASE_URL)
 	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
 
 	try {
@@ -19,7 +21,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	}
 
 	if (event.locals.pb.authStore.isValid) {
-		event.locals.user = serializeNonPOJOs<User>(event.locals.pb.authStore.model);
+		event.locals.user = serializeNonPOJOs(event.locals.pb.authStore.model);
 	} else {
 		event.locals.user = undefined;
 	}
