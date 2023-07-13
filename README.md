@@ -1,39 +1,18 @@
-# create-svelte
+# Twitt Chat App
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+this a simple project powred by sveltekit and pocketbase
 
-## Creating a project
+## More Info About Twitt
 
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+This app will take the lead from Zuck and Musk to be the best chat app in the world of its amazing features like Simple, Laggy, and Vulnerable by default
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+this project is ready to deploy to Vercel
+and Pocketbase is hosted in https://hop.io/ as a Docker container
 
-```bash
-npm run dev
+## Lincense
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+if you want to use this project as a learning reference I have no problem with that, just don't take it completely as it like you make it
 
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
-# TwittChatApp
+# submit an issue or Discussion to ask, fix and tell me anything
