@@ -43,7 +43,7 @@ export const serializeNonPOJOs = <T>(obj: T): T => {
 
 export async function checkConnection(): Promise<boolean> {
   try {
-    const response = await fetch(env.PRIVATE_POCKETBASE_URL + '/api/health')
+    const response = await fetch(env.PUBLIC_POCKETBASE_URL + '/api/health')
     if (response.status == 200) {
       return true
     } else {
