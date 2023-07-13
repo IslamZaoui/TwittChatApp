@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	// The ordering of these imports is critical to your app working properly
 	import '@skeletonlabs/skeleton/themes/theme-crimson.css';
 	// If you have source.organizeImports set to true in VSCode, then it will auto change this ordering
@@ -9,15 +9,17 @@
 	import { AppShell } from '@skeletonlabs/skeleton';
 	import NavBar from '$lib/Components/NavBar.svelte';
 	import type { LayoutData } from './$types';
-
-	export let data : LayoutData
+	import { dev } from '$app/environment';
+	import { inject } from '@vercel/analytics';
+	inject({ mode: dev ? 'development' : 'production' });
+	export let data: LayoutData;
 </script>
 
 <!-- App Shell -->
 <AppShell>
 	<svelte:fragment slot="header">
 		<!-- App Bar -->
-		<NavBar currentuser={data.currentUser} Isviewed={data.Isviewed}/>
+		<NavBar currentuser={data.currentUser} Isviewed={data.Isviewed} />
 	</svelte:fragment>
 	<!-- Page Route Content -->
 	<slot />
