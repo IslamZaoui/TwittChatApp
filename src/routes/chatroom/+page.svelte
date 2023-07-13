@@ -38,6 +38,10 @@
 	onDestroy(() => {
 		unsub?.();
 	});
+
+	$: if (messages && element) {
+		scrollToBottom(element);
+	}
 </script>
 
 <div class="h-full grid grid-rows-[1fr_auto] gap-1">
