@@ -12,7 +12,7 @@ export const config = {
 
 export const load = (async (event) => {
     await event.parent()
-    if (event.locals.pb?.authStore.isValid) {
+    if (event.locals.pb.authStore.isValid) {
         throw redirect(303, '/')
     }
     const form = await superValidate(event, regschema)
@@ -32,8 +32,8 @@ export const actions = {
                 return setError(form, 'username', 'this username is inappropriate')
             }
             try {
-                await pb.collection('users').create(form.data)
-                await pb.collection('users').authWithPassword(form.data.email, form.data.password)
+                await event.locals.pb.collection('users').create(form.data)
+                await event.locals.pb.collection('users').authWithPassword(form.data.email, form.data.password)
             }
             catch (error) {
                 if (error instanceof ClientResponseError) {
