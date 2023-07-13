@@ -1,27 +1,33 @@
-import { pb } from '$lib/pb';
+import { serializeNonPOJOs } from '$lib/utils';
 import type { Handle } from '@sveltejs/kit';
+import { pb } from '$lib/pb';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '')
+	event.locals.pb = pb
+	event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '');
 
-	if (pb.authStore.isValid) {
-		try {
-			await pb.collection('users').authRefresh()
-		} catch (_) {
-			pb.authStore.clear()
+	try {
+		// get an up-to-date auth store state by veryfing and refreshing the loaded auth model (if any)
+		if (event.locals.pb.authStore.isValid) {
+			await event.locals.pb.collection('users').authRefresh();
+			await pb.collection('users').authRefresh();
 		}
+	} catch (_) {
+		// clear the auth store on failed refresh
+		event.locals.pb.authStore.clear();
+		pb.authStore.clear()
 	}
 
-	event.locals.pb = pb
-	event.locals.user = structuredClone(pb.authStore.model)
+	if (event.locals.pb.authStore.isValid) {
+		event.locals.user = serializeNonPOJOs<User>(event.locals.pb.authStore.model);
+	} else {
+		event.locals.user = undefined;
+	}
 
 	const response = await resolve(event);
 
-	const isProd = process.env.NODE_ENV === 'production';
-	response.headers.set(
-		'set-cookie',
-		event.locals.pb.authStore.exportToCookie({ secure: isProd, sameSite: 'Lax' })
-	);
+	// TODO: secure before deployment
+	response.headers.set('set-cookie', event.locals.pb.authStore.exportToCookie({ secure: false }));
 
 	return response;
 };
