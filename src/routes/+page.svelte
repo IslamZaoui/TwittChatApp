@@ -6,6 +6,7 @@
 	import { goto } from '$app/navigation';
 	import logo from '$lib/favicon.png'
 	export let data: PageData;
+	console.log(data.git)
 </script>
 
 <div class="page py-24">
@@ -44,7 +45,7 @@
 				<Fa icon={faPaperPlane} />
 				<span>{data.currentUser ? 'Start Chating' : 'Login and Start Chating'}</span>
 			</button>
-			<a href="/" class="flex items-center space-x-2 text-gray-500">
+			<a href="https://github.com/zicoding2/TwittChatApp" target="_blank" class="flex items-center space-x-2 text-gray-500">
 				<Fa icon={faGithub} size="lg" />
 				<span>Source</span>
 			</a>
