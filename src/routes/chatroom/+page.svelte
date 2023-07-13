@@ -12,11 +12,11 @@
 	let element: HTMLDivElement;
 	export let data: PageData;
 	let messages = data.messages;
-	
-	const { form, errors, enhance, message } = superForm(data.form);
-	let unsub1: () => void;
+
+	const { form, errors, enhance } = superForm(data.form);
+	let unsub: () => void;
 	onMount(async () => {
-		unsub1 = await pb.collection('messages').subscribe('*', async ({ action, record }) => {
+		unsub = await pb.collection('messages').subscribe('*', async ({ action, record }) => {
 			if (action === 'create') messages = [...messages, record];
 			if (action === 'delete') messages = messages.filter((m) => m.id !== record.id);
 			if (action === 'update') {
@@ -31,9 +31,9 @@
 		});
 	});
 
-	onDestroy(()=>{
-		unsub1?.()
-	})
+	onDestroy(() => {
+		unsub?.();
+	});
 </script>
 
 <div class="h-full grid grid-rows-[1fr_auto] gap-1">
