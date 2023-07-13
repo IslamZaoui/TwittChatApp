@@ -6,7 +6,6 @@
 	import { goto } from '$app/navigation';
 	import logo from '$lib/favicon.png'
 	export let data: PageData;
-	console.log(data.git)
 </script>
 
 <div class="page py-24">

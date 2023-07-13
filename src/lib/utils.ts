@@ -1,4 +1,4 @@
-import { env } from "$env/dynamic/private";
+import { env } from "$env/dynamic/public";
 import badWords from './DirtyWords.json';
 
 export async function censorBadWords(text:string) {
