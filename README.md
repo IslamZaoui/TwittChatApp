@@ -4,7 +4,7 @@
 
 # Twitt Chat App
 
-this a simple project powred by sveltekit and pocketbase
+This a simple project powered by by Sveltekit and Pocketbase
 
 ## Appendix
 
