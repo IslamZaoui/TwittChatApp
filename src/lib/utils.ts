@@ -17,3 +17,10 @@ export async function checkConnection(): Promise<boolean> {
     return false
   }
 }
+
+export function avatarURL(id: string | undefined, avatar: string | undefined) {
+  if (id != undefined && avatar != undefined)
+    return env.PUBLIC_POCKETBASE_URL + "/api/files/users/" + id + "/" + avatar
+
+  return ""
+}

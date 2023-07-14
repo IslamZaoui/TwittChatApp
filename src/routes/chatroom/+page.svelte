@@ -3,9 +3,10 @@
 	import type { PageData } from './$types';
 	import Fa from 'svelte-fa';
 	import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-	import { Avatar,focusTrap } from '@skeletonlabs/skeleton';
+	import { Avatar, focusTrap } from '@skeletonlabs/skeleton';
 	import { afterUpdate, onDestroy, onMount } from 'svelte';
 	import { pb } from '$lib/pb';
+	import { avatarURL } from '$lib/utils';
 	const scrollToBottom = async (node: HTMLDivElement) => {
 		node.scroll({ top: node.scrollHeight, behavior: 'smooth' });
 	};
@@ -44,7 +45,7 @@
 			scrollToBottom(element);
 		}
 	});
-	
+
 	$: if (messages && element) {
 		scrollToBottom(element);
 	}
@@ -59,10 +60,7 @@
 		{#each messages as msg (msg.id)}
 			{#if msg.expand?.user?.username == data.currentUser.username}
 				<div class="grid grid-cols-[auto_1fr] gap-2">
-					<Avatar
-						src="https://api.dicebear.com/6.x/lorelei/svg?seed=${msg.expand?.user?.username}"
-						width="w-12"
-					/>
+					<Avatar src={avatarURL(msg.expand?.user?.id, msg.expand?.user?.avatar)} width="w-12" />
 					<div class="card p-4 variant-soft-primary rounded-tl-none space-y-2">
 						<header class="flex justify-between items-center">
 							<p class="font-bold space-x-2">
@@ -88,10 +86,7 @@
 						</header>
 						<p>{msg.text}</p>
 					</div>
-					<Avatar
-						src="https://api.dicebear.com/6.x/lorelei/svg?seed=${msg.expand?.user?.username}"
-						width="w-12"
-					/>
+					<Avatar src={avatarURL(msg.expand?.user?.id, msg.expand?.user?.avatar)} width="w-12" />
 				</div>
 			{/if}
 		{/each}
@@ -99,6 +94,8 @@
 	<div class="bg-surface-500/30 p-4">
 		{#if !data.banned}
 			<form
+				data-sveltekit-replacestate
+				data-sveltekit-keepfocus
 				use:focusTrap={true}
 				use:enhance
 				method="POST"
@@ -109,6 +106,7 @@
 					name="text"
 					type="text"
 					required
+					autofocus
 					bind:value={$form.text}
 					placeholder={$errors.text ? '' + $errors.text : 'Write a message...'}
 				/>

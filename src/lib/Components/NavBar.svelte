@@ -3,6 +3,7 @@
 	import Fa from 'svelte-fa';
 	import { faSignOut } from '@fortawesome/free-solid-svg-icons';
 	import logo from '../favicon.png';
+	import { avatarURL } from '$lib/utils';
 	export let currentuser: User | undefined;
 	export let Isviewed: boolean;
 </script>
@@ -24,7 +25,7 @@
 							<button><Fa icon={faSignOut} /></button>
 						</form></span
 					>
-					<Avatar src={currentuser.avatar} initials={currentuser.username} width="w-10" />
+					<Avatar src={avatarURL(currentuser.id,currentuser.avatar)} initials={currentuser.username} width="w-10" />
 				</div>
 			{:else}
 				<a class="btn btn-sm variant-ghost-surface" href="/login"> Login </a>
