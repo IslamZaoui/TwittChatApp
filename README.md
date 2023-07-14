@@ -16,4 +16,6 @@ and Pocketbase is hosted in https://hop.io/ as a Docker container
 
 if you want to use this project as a learning reference I have no problem with that, just don't take it completely as it like you make it
 
-# submit an issue or Discussion to ask, fix and tell me anything
+# Contact
+
+Submit an issue or Discussion to ask, report a problem, and tell me any ideas to implement
