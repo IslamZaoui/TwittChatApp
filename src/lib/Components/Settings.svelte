@@ -6,10 +6,7 @@
 	export let data: PageData;
 	export let form: ActionData;
 
-    interface PBError {
-        code: string,
-        message:string
-    }
+    let username = data.currentUser.username
 
 	const {
 		errors: emailerror,
@@ -63,7 +60,7 @@
 				class="input flex-grow h-10 px-3 rounded-md"
 				name="username"
 				placeholder="Username"
-				bind:value={data.currentUser.username}
+				bind:value={username}
 			/>
 			<button class="btn variant-filled-secondary hover:variant-ghost-secondary text-white"
 				>Change</button
