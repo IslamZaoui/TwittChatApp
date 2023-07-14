@@ -4,13 +4,15 @@
 	import { faGear, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 	import Profile from '$lib/Components/Profile.svelte';
+	import Settings from '$lib/Components/Settings.svelte';
+	import { Toaster } from 'svelte-french-toast';
 
 	export let form: ActionData;
 	export let data: PageData;
 
 	let tabSet: number = 0;
 </script>
-
+<Toaster />
 <TabGroup
 	justify="justify-center"
 	active="variant-filled-primary"
@@ -41,9 +43,7 @@
 		{#if tabSet === 0}
 			<Profile data={data} form={form}/>
 		{:else if tabSet === 1}
-			<div class="container h-full mx-auto flex flex-col justify-center items-center">
-				Currently under development
-			</div>
+			<Settings data={data} form={form}/>
 		{:else if tabSet === 2}
 			<div class="container h-full mx-auto flex flex-col justify-center items-center">
 				Currently under development

@@ -16,7 +16,6 @@ export const logschema = z.object({
     password: z
         .string({ required_error: "Password is required" })
         .min(8, { message: "Password must be 8 chars or above" })
-        .max(16, { message: "Password must be 16 chars or less" })
         .trim()
 })
 
@@ -32,12 +31,10 @@ export const regschema = z.object({
     password: z
         .string({ required_error: "Password is required" })
         .min(8, { message: "Password must be 8 chars or above" })
-        .max(16, { message: "Password must be 16 chars or less" })
         .trim(),
     passwordConfirm: z
         .string({ required_error: "Password is required" })
         .min(8, { message: "Password must be 8 chars or above" })
-        .max(16, { message: "Password must be 16 chars or less" })
         .trim(),
 }).refine((data) => data.password === data.passwordConfirm, {
     message: "Passwords don't match",
@@ -50,7 +47,6 @@ export const msgschema = z.object({
         .max(100, { message: "Message too large" })
         .trim(),
     user: z.string(),
-    messages: z.custom<any[]>().optional()
 })
 
 const MAX_FILE_SIZE = 2.5 * 1024 * 1024;
@@ -72,10 +68,39 @@ export const avatarValidation = z
                     message: "Unsupported file type. Supported formats: jpeg, jpg, png, web, svg, gif'"
                 });
             }
-        }else{
+        } else {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
                 message: 'You must enter an image'
             });
         }
     })
+
+export const ChangeEmSchema = z.object({
+    email: z
+        .string({ required_error: "Email is required" })
+        .email({ message: "This is not an Email" }),
+})
+
+export const ChangeUnShema = z.object({
+    username: z
+        .string({ required_error: "Username is required" })
+        .min(5, { message: "Username must be 5 chars or above" })
+        .max(16, { message: "Username must be 16 chars or less" })
+        .trim(),
+})
+
+export const ChangePassSchema = z.object({
+    oldpassword: z.string({ required_error: "Password is required" }),
+    newpassword: z
+        .string({ required_error: "Password is required" })
+        .min(8, { message: "Password must be 8 chars or above" })
+        .trim(),
+    newpasswordConfirm: z
+        .string({ required_error: "Password is required" })
+        .min(8, { message: "Password must be 8 chars or above" })
+        .trim(),
+}).refine((data) => data.newpassword === data.newpasswordConfirm, {
+    message: "Passwords don't match",
+    path: ["newpasswordConfirm"],
+})

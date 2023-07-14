@@ -26,6 +26,7 @@
 			class="modal-form {cForm}"
 			method="post"
 			use:enhance
+			action="?/ChnageAvatar"
 			enctype="multipart/form-data"
 			bind:this={form}
 		>

@@ -26,7 +26,7 @@
 	}
 
 	$: if (form?.success) {
-		toast.success('Avatar uploaded');
+		toast.success(form?.success);
 	}
 
 	const modalComponentRegistry: Record<string, ModalComponent> = {
@@ -43,7 +43,6 @@
 	}
 </script>
 
-<Toaster />
 <Modal components={modalComponentRegistry} />
 <div class="flex flex-col">
 	<div class="container mx-auto px-4 py-8">

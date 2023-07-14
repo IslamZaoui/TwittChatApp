@@ -1,8 +1,9 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { avatarValidation } from '$lib/validation';
+import { ChangeEmSchema, ChangePassSchema, ChangeUnShema, avatarValidation, logschema } from '$lib/validation';
 import { fromZodError } from 'zod-validation-error';
 import { ClientResponseError } from 'pocketbase';
+import { superValidate } from 'sveltekit-superforms/server';
 
 export const config = {
     runtime: 'edge',
@@ -13,16 +14,20 @@ export const load = (async (event) => {
     if (!event.locals.pb.authStore.isValid) {
         throw redirect(303, '/')
     }
-    return {}
+    const FormChangeEmail = await superValidate(event, ChangeEmSchema)
+    const FormChangeUsername = await superValidate(event, ChangeUnShema)
+    const FormChangePassword = await superValidate(event, ChangePassSchema)
+    return {
+        FormChangeEmail, FormChangeUsername, FormChangePassword
+    };
 }) satisfies PageServerLoad;
 
 export const actions = {
-    default: async (event) => {
+    ChnageAvatar: async (event) => {
         const formData = await event.request.formData();
         const file = formData.get('avatar') as File;
-        let avatar
         try {
-            avatar = avatarValidation.parse(file)
+            avatarValidation.parse(file)
         }
         catch (err) {
             const validationError = fromZodError(err as any);
@@ -38,6 +43,60 @@ export const actions = {
             if (err instanceof ClientResponseError)
                 return fail(400, { pberror: err.message })
         }
-        return { success: 200 }
-    }
+        return { success: "avatar changed" }
+    },
+    ChangeEmail: async (event) => {
+        const form = await superValidate(event, ChangeEmSchema)
+        if (!form.valid) {
+            return fail(400, { form })
+        }
+        try {
+            await event.locals.pb.collection('users').requestEmailChange(form.data.email)
+        } catch (error) {
+            if (error instanceof ClientResponseError) {
+                form.message = error.message
+                return fail(error.status, { form })
+            }
+        }
+        form.message = "Email change request sent to your email"
+        return { form }
+    },
+    ChangeUsername: async (event) => {
+        const form = await superValidate(event, ChangeUnShema)
+        if (!form.valid) {
+            return fail(400, { form })
+        }
+        try {
+            await event.locals.pb.collection('users').update(event.locals.user.id, { username: form.data.username })
+        }
+        catch (error) {
+            if (error instanceof ClientResponseError) {
+                form.message = error.message
+                return fail(error.status, { form })
+            }
+        }
+        form.message = "Username changed"
+        return { form }
+    },
+    ChangePassword: async (event) => {
+        const form = await superValidate(event, ChangePassSchema)
+        if (!form.valid) {
+            return fail(400, { form })
+        }
+        try {
+            await event.locals.pb.collection('users').update(event.locals.user.id, {
+                password: form.data.newpassword,
+                passwordConfirm: form.data.newpasswordConfirm,
+                oldPassword: form.data.oldpassword
+            })
+        }
+        catch (error) {
+            if (error instanceof ClientResponseError) {
+                form.message = error.message
+                return fail(error.status, { form })
+            }
+        }
+        form.message = "Password Changed"
+        return { form }
+    },
 } satisfies Actions
