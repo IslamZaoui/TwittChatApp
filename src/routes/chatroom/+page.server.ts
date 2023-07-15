@@ -3,6 +3,7 @@ import type { PageServerLoad } from './$types';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { msgschema } from '$lib/validation';
 import { ClientResponseError } from 'pocketbase';
+import { boolean } from 'zod';
 
 export const config = {
     runtime: 'edge',
@@ -13,22 +14,21 @@ export const load = (async (event) => {
     if (!event.locals.pb.authStore.isValid) {
         throw redirect(303, '/')
     }
-    let messages: any[] = []
-    let banned: boolean = false
-    try {
-        const list = await event.locals.pb.collection('messages').getList(1, 50, {
-            sort: 'created',
-            expand: 'user'
 
-        })
-        messages = list.items
+    const messages = async () => {
+        try {
+            return (await event.locals.pb.collection('messages').getList(1, 50, {
+                sort: 'created',
+                expand: 'user'
+
+            })).items.map((msg) => msg.export())
+        } catch (_) {
+            return []
+        }
     }
-    catch (error) {
-        messages = []
-    }
-    banned = (await event.locals.pb.collection('users').getOne(event.locals.user.id)).banned
-    const form = await superValidate(event, msgschema)
-    return { form, messages: messages.map((msg) => msg.export()), banned }
+    const banned = async () => { return (await event.locals.pb.collection('users').getOne(event.locals.user.id)).banned as boolean }
+    const form = async () => { return await superValidate(event, msgschema) }
+    return { form: form(), messages: messages(), banned: banned() }
 }) satisfies PageServerLoad;
 
 export const actions = {

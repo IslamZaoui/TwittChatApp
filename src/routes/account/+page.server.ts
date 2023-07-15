@@ -14,11 +14,11 @@ export const load = (async (event) => {
     if (!event.locals.pb.authStore.isValid) {
         throw redirect(303, '/')
     }
-    const FormChangeEmail = await superValidate(event, ChangeEmSchema)
-    const FormChangeUsername = await superValidate(event, ChangeUnShema)
-    const FormChangePassword = await superValidate(event, ChangePassSchema)
+    const FormChangeEmail = async () => { return await superValidate(event, ChangeEmSchema) }
+    const FormChangeUsername = async () => { return await superValidate(event, ChangeUnShema) }
+    const FormChangePassword = async () => { return await superValidate(event, ChangePassSchema) }
     return {
-        FormChangeEmail, FormChangeUsername, FormChangePassword
+        FormChangeEmail: FormChangeEmail(), FormChangeUsername: FormChangeUsername(), FormChangePassword: FormChangePassword()
     };
 }) satisfies PageServerLoad;
 

@@ -13,9 +13,9 @@ export const load = (async (event) => {
     if (event.locals.pb.authStore.isValid) {
         throw redirect(303, '/')
     }
-    const form = await superValidate(event, regschema)
+    const form = async () => {return await superValidate(event, regschema)}
     return {
-        form
+        form:form()
     };
 }) satisfies PageServerLoad;
 
