@@ -38,7 +38,7 @@
 </script>
 
 <div class="container mx-auto max-w-md p-4">
-	<div class="bg-surface-600 rounded-lg shadow-lg p-4 mb-4">
+	<div class="variant-filled-surface rounded-lg shadow-lg p-4 mb-4">
 		<h2 class="text-xl font-semibold mb-2">Email</h2>
 		<form class="flex items-center space-x-2" method="post" use:emailenhance action="?/ChangeEmail">
 			<input class="input flex-grow h-10 px-3 rounded-md" name="email" placeholder="New Email" />
@@ -48,7 +48,7 @@
 		</form>
 		{#if $emailerror.email}<small class="text-error-300">{$emailerror.email}</small>{/if}
 	</div>
-	<div class="bg-surface-600 rounded-lg shadow-lg p-4 mb-4">
+	<div class="variant-filled-surface rounded-lg shadow-lg p-4 mb-4">
 		<h2 class="text-xl font-semibold mb-2">Username</h2>
 		<form
 			class="flex items-center space-x-2"
@@ -68,33 +68,33 @@
 		</form>
 		{#if $usererror.username}<small class="text-error-300">{$usererror.username}</small>{/if}
 	</div>
-	<div class="bg-surface-600 rounded-lg shadow-lg p-4">
+	<div class="variant-filled-surface rounded-lg shadow-lg p-4">
 		<h2 class="text-xl font-semibold mb-2">Password</h2>
 		<form class="space-y-2" method="post" use:passenhance action="?/ChangePassword">
             <input
 				class="input h-10 px-3 rounded-md"
-				name="oldpassword"
+				name="oldPassword"
 				placeholder="Old Password"
 				type="password"
 			/>
-			{#if $passerror.oldpassword}<small class="text-error-300">{$passerror.oldpassword}</small
+			{#if $passerror.oldPassword}<small class="text-error-300">{$passerror.oldPassword}</small
 				>{/if}
 			<input
 				class="input h-10 px-3 rounded-md"
-				name="newpassword"
+				name="password"
 				placeholder="New Password"
 				type="password"
 			/>
-			{#if $passerror.newpassword}<small class="text-error-300">{$passerror.newpassword}</small
+			{#if $passerror.password}<small class="text-error-300">{$passerror.password}</small
 				>{/if}
 			<input
 				class="input h-10 px-3 rounded-md"
 				placeholder="Confirm New Password"
 				type="password"
-				name="newpasswordConfirm"
+				name="passwordConfirm"
 			/>
-			{#if $passerror.newpasswordConfirm}<small class="text-error-300"
-					>{$passerror.newpasswordConfirm}<br /></small
+			{#if $passerror.passwordConfirm}<small class="text-error-300"
+					>{$passerror.passwordConfirm}<br /></small
 				>{/if}
 			<button class="btn variant-filled-secondary hover:variant-ghost-secondary text-white"
 				>Change</button

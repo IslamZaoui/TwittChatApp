@@ -91,16 +91,16 @@ export const ChangeUnShema = z.object({
 })
 
 export const ChangePassSchema = z.object({
-    oldpassword: z.string({ required_error: "Password is required" }),
-    newpassword: z
+    oldPassword: z.string({ required_error: "Password is required" }),
+    password: z
         .string({ required_error: "Password is required" })
         .min(8, { message: "Password must be 8 chars or above" })
         .trim(),
-    newpasswordConfirm: z
+    passwordConfirm: z
         .string({ required_error: "Password is required" })
         .min(8, { message: "Password must be 8 chars or above" })
         .trim(),
-}).refine((data) => data.newpassword === data.newpasswordConfirm, {
+}).refine((data) => data.password === data.passwordConfirm, {
     message: "Passwords don't match",
     path: ["newpasswordConfirm"],
 })

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { AppBar, Avatar } from '@skeletonlabs/skeleton';
+	import { AppBar, Avatar, LightSwitch } from '@skeletonlabs/skeleton';
 	import Fa from 'svelte-fa';
 	import { faSignOut } from '@fortawesome/free-solid-svg-icons';
 	import logo from '../favicon.png';
@@ -18,18 +18,33 @@
 	<svelte:fragment slot="trail">
 		{#if Isviewed}
 			{#if currentuser}
-			<a class="btn btn-sm variant-ghost-surface" href="/account"> Account </a>
+				<LightSwitch />
+				<a class="btn btn-sm variant-filled-primary hover:variant-soft-primary" href="/account">
+					Account
+				</a>
+
 				<div class="relative inline-block">
 					<span class="badge-icon variant-filled-warning absolute -top-1 -right-1 z-10"
 						><form action="/logout" method="POST">
-							<button><Fa icon={faSignOut} /></button>
+							<button class="flex"><Fa icon={faSignOut} /></button>
 						</form></span
 					>
-					<Avatar src={avatarURL(currentuser.id,currentuser.avatar)} initials={currentuser.username} width="w-10" />
+					<Avatar
+						src={avatarURL(currentuser.id, currentuser.avatar)}
+						initials={currentuser.username}
+						width="w-10"
+					/>
 				</div>
 			{:else}
-				<a class="btn btn-sm variant-ghost-surface" href="/login"> Login </a>
-				<a class="btn btn-sm variant-ghost-surface" href="/register"> Register </a>
+				<a class="btn btn-sm variant-filled-secondary hover:variant-soft-secondary" href="/login">
+					Login
+				</a>
+				<a
+					class="btn btn-sm variant-filled-secondary hover:variant-soft-secondary"
+					href="/register"
+				>
+					Register
+				</a>
 			{/if}
 		{/if}
 	</svelte:fragment>

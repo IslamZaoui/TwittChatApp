@@ -67,7 +67,7 @@ export const actions = {
             return fail(400, { form })
         }
         try {
-            await event.locals.pb.collection('users').update(event.locals.user.id, { username: form.data.username })
+            await event.locals.pb.collection('users').update(event.locals.user.id, form.data)
         }
         catch (error) {
             if (error instanceof ClientResponseError) {
@@ -84,11 +84,7 @@ export const actions = {
             return fail(400, { form })
         }
         try {
-            await event.locals.pb.collection('users').update(event.locals.user.id, {
-                password: form.data.newpassword,
-                passwordConfirm: form.data.newpasswordConfirm,
-                oldPassword: form.data.oldpassword
-            })
+            await event.locals.pb.collection('users').update(event.locals.user.id, form.data)
         }
         catch (error) {
             if (error instanceof ClientResponseError) {
