@@ -1,10 +1,14 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { modalStore } from '@skeletonlabs/skeleton';
 
 	export let parent: any;
 
-	let form: HTMLFormElement;
-	import { FileDropzone, modalStore } from '@skeletonlabs/skeleton';
+	let Form: HTMLFormElement;
+	function onFormSubmit(): void {
+		Form.requestSubmit()
+		modalStore.close();
+	}
 
 	const cBase = 'card p-4 w-modal shadow-xl space-y-4';
 	const cHeader = 'text-2xl font-bold';
@@ -13,27 +17,20 @@
 
 {#if $modalStore[0]}
 	<div class="modal-example-form {cBase}">
-		<header class={cHeader}>Change Avatar</header>
-		<article>Upload your avatar here:</article>
+		<header class={cHeader}>Password Reset</header>
+		<article>Enter your account's Email:</article>
 		<form
 			class="modal-form {cForm}"
 			method="post"
 			use:enhance
-			action="?/ChnageAvatar"
+			action="?/ResetPassword"
 			enctype="multipart/form-data"
-			bind:this={form}
+			bind:this={Form}
 		>
-			<FileDropzone
-				name="avatar"
-				accept="image/*"
-				required
-				on:change={() => {
-					form.requestSubmit();
-					modalStore.close();
-				}}
-			/>
+			<input class="input" name='email' type="email" placeholder="Email">
 		</form>
 		<footer class="modal-footer {parent.regionFooter}">
+            <button class="btn {parent.buttonPositive}" on:click={onFormSubmit}>Submit</button>
 			<button class="btn {parent.buttonNeutral}" on:click={parent.onClose}
 				>{parent.buttonTextCancel}</button
 			>

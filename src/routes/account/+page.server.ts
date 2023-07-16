@@ -1,6 +1,6 @@
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
-import { ChangeEmSchema, ChangePassSchema, ChangeUnShema, avatarValidation, logschema } from '$lib/validation';
+import { ChangeEmSchema, ChangePassSchema, ChangeUnShema, EmailValid, avatarValidation, logschema } from '$lib/validation';
 import { fromZodError } from 'zod-validation-error';
 import { ClientResponseError } from 'pocketbase';
 import { superValidate } from 'sveltekit-superforms/server';
@@ -95,4 +95,24 @@ export const actions = {
         form.message = "Password Changed"
         return { form }
     },
+    ResetPassword: async (event) => {
+        const formData = await event.request.formData();
+        const email = formData.get('email') as string
+        try {
+            await EmailValid.parseAsync(email)
+        } 
+        catch (err) {
+            const validationError = fromZodError(err as any);
+            return fail(400, { error: validationError.message })
+        }
+
+        try{
+            await event.locals.pb.collection('users').requestPasswordReset(email)
+        }
+        catch(err){
+            const pberror = err as ClientResponseError
+            return fail(400, { error: pberror.message })
+        }
+        return {success:'Password Reset Request sent to your email'}
+    }
 } satisfies Actions

@@ -2,11 +2,30 @@
 	import { superForm } from 'sveltekit-superforms/client';
 	import type { PageData, ActionData } from '../../routes/account/$types';
 	import toast, { Toaster } from 'svelte-french-toast';
+	import {
+		Modal,
+		modalStore,
+		type ModalComponent,
+		type ModalSettings
+	} from '@skeletonlabs/skeleton';
+	import ResetPassword from './ResetPassword.svelte';
 
 	export let data: PageData;
 	export let form: ActionData;
 
-    let username = data.currentUser.username
+	const resetpass: ModalComponent = {
+		ref: ResetPassword
+	};
+
+	function reset() {
+		const modal: ModalSettings = {
+			type: 'component',
+			component: resetpass
+		};
+		modalStore.trigger(modal);
+	}
+
+	let username = data.currentUser.username;
 
 	const {
 		errors: emailerror,
@@ -24,19 +43,17 @@
 		message: passmsg
 	} = superForm(data.FormChangePassword);
 
-	$: if ($emailmsg) {
-		toast($emailmsg);
-	}
+	$: if ($emailmsg) toast($emailmsg);
 
-    $: if ($usermsg) {
-		toast($usermsg);
-	}
+	$: if ($usermsg) toast($usermsg);
 
-    $: if ($passmsg) {
-		toast($passmsg);
-	}
+	$: if ($passmsg) toast($passmsg);
+
+	$: if (form?.error) toast.error(form.error);
+	$: if (form?.success) toast.success(form?.success);
 </script>
 
+<Modal />
 <div class="container mx-auto max-w-md p-4">
 	<div class="variant-filled-surface rounded-lg shadow-lg p-4 mb-4">
 		<h2 class="text-xl font-semibold mb-2">Email</h2>
@@ -71,7 +88,7 @@
 	<div class="variant-filled-surface rounded-lg shadow-lg p-4">
 		<h2 class="text-xl font-semibold mb-2">Password</h2>
 		<form class="space-y-2" method="post" use:passenhance action="?/ChangePassword">
-            <input
+			<input
 				class="input h-10 px-3 rounded-md"
 				name="oldPassword"
 				placeholder="Old Password"
@@ -85,8 +102,7 @@
 				placeholder="New Password"
 				type="password"
 			/>
-			{#if $passerror.password}<small class="text-error-300">{$passerror.password}</small
-				>{/if}
+			{#if $passerror.password}<small class="text-error-300">{$passerror.password}</small>{/if}
 			<input
 				class="input h-10 px-3 rounded-md"
 				placeholder="Confirm New Password"
@@ -98,6 +114,9 @@
 				>{/if}
 			<button class="btn variant-filled-secondary hover:variant-ghost-secondary text-white"
 				>Change</button
+			>
+			<a href="#" on:click={reset} class="text-blue-500 hover:underline text-center"
+				>Forget Password?</a
 			>
 		</form>
 	</div>

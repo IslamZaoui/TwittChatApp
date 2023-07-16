@@ -3,7 +3,6 @@ import type { PageServerLoad } from './$types';
 import { message, superValidate } from 'sveltekit-superforms/server';
 import { msgschema } from '$lib/validation';
 import { ClientResponseError } from 'pocketbase';
-import { boolean } from 'zod';
 
 export const config = {
     runtime: 'edge',
@@ -16,13 +15,17 @@ export const load = (async (event) => {
     }
 
     const messages = async () => {
-        try {
-            return (await event.locals.pb.collection('messages').getList(1, 50, {
-                sort: 'created',
-                expand: 'user'
+        if (event.locals.user.verified) {
+            try {
+                return (await event.locals.pb.collection('messages').getList(1, 50, {
+                    sort: 'created',
+                    expand: 'user'
 
-            })).items.map((msg) => msg.export())
-        } catch (_) {
+                })).items.map((msg) => msg.export())
+            } catch (_) {
+                return []
+            }
+        } else {
             return []
         }
     }

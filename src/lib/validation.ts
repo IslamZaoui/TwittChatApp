@@ -104,3 +104,7 @@ export const ChangePassSchema = z.object({
     message: "Passwords don't match",
     path: ["newpasswordConfirm"],
 })
+
+export const EmailValid = z
+    .string({ required_error: "Email is required" })
+    .email({ message: "This is not an Email" })

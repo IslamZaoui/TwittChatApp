@@ -5,5 +5,4 @@
     <div class='flex flex-col variant-ghost-error p-5 justify-center items-center'>
         <strong class="text-2xl">Temporarily Unavailable</strong>
     </div>
-    
 </div>

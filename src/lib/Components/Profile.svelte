@@ -15,7 +15,7 @@
 	import type { PageData } from '../../routes/account/$types';
 
 	export let form: ActionData;
-	export let data: PageData
+	export let data: PageData;
 
 	$: if (form?.error) {
 		toast.error(form?.error);
@@ -52,13 +52,20 @@
 					<span class="badge-icon variant-filled-warning absolute -top-1 -right-1 z-10">
 						<button on:click={changeavatar}><Fa icon={faEdit} /></button>
 					</span>
-					<Avatar src={avatarURL(data.currentUser.id, data.currentUser.avatar)} initials={data.currentUser.username} width="w-20" />
+					<Avatar
+						src={avatarURL(data.currentUser.id, data.currentUser.avatar)}
+						initials={data.currentUser.username}
+						width="w-20"
+					/>
 				</div>
 				<h1 class="text-xl font-bold">{data.currentUser.username}</h1>
 			</div>
 			<div class="text-sm">
 				Account Status: <span class={!data.currentUser.banned ? 'text-green-500' : 'text-red-500'}
 					>{!data.currentUser.banned ? 'Active' : 'Banned'}</span
+				>,
+				<span class={data.currentUser.verified ? 'text-green-500' : 'text-red-500'}
+					>{data.currentUser.verified ? 'Verified' : 'Not Verified'}</span
 				>
 			</div>
 		</div>
