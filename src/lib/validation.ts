@@ -49,7 +49,7 @@ export const msgschema = z.object({
     user: z.string(),
 })
 
-const MAX_FILE_SIZE = 2.5 * 1024 * 1024;
+const MAX_FILE_SIZE = 20 * 1024 * 1024;
 
 export const avatarValidation = z
     .instanceof(File)
