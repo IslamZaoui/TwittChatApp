@@ -14,10 +14,10 @@
 <nav class="list-nav p-4 space-y-5" on:load={Selected}>
 	<ul>
 		<li>
-            <a href="/account" on:click={drawerClose}>
-                <span>Account</span>
-            </a>
 			{#if currentuser}
+				<a href="/account" on:click={drawerClose}>
+					<span>Account</span>
+				</a>
 				<a href="/chatroom" on:click={drawerClose}>
 					<span class="m-1"><Fa icon={faPaperPlane} size="lg" /></span>
 					<span>Chat Room</span>
