@@ -11,6 +11,7 @@
 	import type { LayoutData } from './$types';
 	import { dev } from '$app/environment';
 	import { inject } from '@vercel/analytics';
+	import SideBar from '$lib/Components/SideBar.svelte';
 	inject({ mode: dev ? 'development' : 'production' });
 	export let data: LayoutData;
 </script>
@@ -20,6 +21,9 @@
 	<svelte:fragment slot="header">
 		<!-- App Bar -->
 		<NavBar currentuser={data.currentUser} Isviewed={data.Isviewed} />
+	</svelte:fragment>
+	<svelte:fragment slot="sidebarLeft">
+		<SideBar data={data}/>
 	</svelte:fragment>
 	<!-- Page Route Content -->
 	<slot />

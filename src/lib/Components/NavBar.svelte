@@ -1,15 +1,22 @@
 <script lang="ts">
-	import { AppBar, Avatar, LightSwitch } from '@skeletonlabs/skeleton';
+	import { AppBar, Avatar, Drawer, LightSwitch, drawerStore } from '@skeletonlabs/skeleton';
 	import Fa from 'svelte-fa';
-	import { faSignOut } from '@fortawesome/free-solid-svg-icons';
+	import { faBars, faSignOut } from '@fortawesome/free-solid-svg-icons';
 	import logo from '../favicon.png';
 	import { avatarURL } from '$lib/utils';
+	import SideBarDrawer from './SideBarDrawer.svelte';
 	export let currentuser: User | undefined;
 	export let Isviewed: boolean;
 </script>
 
+<Drawer width="w-[200px]">
+	<SideBarDrawer {currentuser} />
+</Drawer>
 <AppBar>
 	<svelte:fragment slot="lead">
+		<button class="btn-icon ml-2 md:hidden" on:click={() => drawerStore.open()}
+			><Fa icon={faBars} /></button
+		>
 		<a href="/" class="flex space-x-1 items-center">
 			<img src={logo} class="aspect-square w-8" alt="logo" />
 			<strong class="text-xl uppercase">Twitt</strong>
@@ -19,10 +26,12 @@
 		{#if Isviewed}
 			{#if currentuser}
 				<LightSwitch />
-				<a class="btn btn-sm variant-filled-primary hover:variant-soft-primary" href="/account">
+				<a
+					class="btn btn-sm variant-filled-primary hover:variant-soft-primary hidden md:block"
+					href="/account"
+				>
 					Account
 				</a>
-
 				<div class="relative inline-block">
 					<span class="badge-icon variant-filled-warning absolute -top-1 -right-1 z-10"
 						><form action="/logout" method="POST">
