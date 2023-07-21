@@ -7,7 +7,13 @@
 		Paginator,
 		type ModalComponent,
 		type ModalSettings,
-		modalStore
+		modalStore,
+
+		type PopupSettings,
+
+		popup
+
+
 	} from '@skeletonlabs/skeleton';
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
@@ -56,8 +62,13 @@
 		};
 		modalStore.trigger(modal);
 	}
-</script>
 
+	const popupHover: PopupSettings = {
+		event: 'hover',
+		target: 'popupHover',
+		placement: 'top'
+	};
+</script>
 <Modal />
 <AppShell>
 	<svelte:fragment slot="pageHeader">
@@ -69,7 +80,11 @@
 				name="chips"
 				placeholder="Search..."
 			/>
-			<button class="btn variant-filled-primary" on:click={NewPost}>New Post</button>
+			{#if data.currentUser.banned}
+				<button class="btn variant-filled-primary [&>*]:pointer-events-none" disabled use:popup={popupHover}>New Post</button>
+			{:else}
+				<button class="btn variant-filled-primary" on:click={NewPost}>New Post</button>
+			{/if}
 			<Paginator
 				bind:settings={pagesettings}
 				on:page={onPageChange}
@@ -87,3 +102,7 @@
 		</div>
 	</slot>
 </AppShell>
+<div class="card p-4 variant-filled-secondary" data-popup="popupHover">
+	<p>Banned user can't post</p>
+	<div class="arrow variant-filled-secondary" />
+</div>

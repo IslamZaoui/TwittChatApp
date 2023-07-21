@@ -12,6 +12,11 @@
 	import { dev } from '$app/environment';
 	import { inject } from '@vercel/analytics';
 	import SideBar from '$lib/Components/SideBar.svelte';
+	import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
+
+	import { storePopup } from '@skeletonlabs/skeleton';
+	storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
+
 	inject({ mode: dev ? 'development' : 'production' });
 	export let data: LayoutData;
 </script>
@@ -23,7 +28,7 @@
 		<NavBar currentuser={data.currentUser} Isviewed={data.Isviewed} />
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">
-		<SideBar data={data}/>
+		<SideBar {data} />
 	</svelte:fragment>
 	<!-- Page Route Content -->
 	<slot />

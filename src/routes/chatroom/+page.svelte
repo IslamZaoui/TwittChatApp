@@ -122,7 +122,6 @@
 						name="text"
 						type="text"
 						required
-						autofocus
 						bind:value={$form.text}
 						placeholder={$errors.text ? '' + $errors.text : 'Write a message...'}
 					/>
@@ -131,7 +130,7 @@
 					>
 				</form>
 			{:else}
-				<span><strong class="text-error-500">You are banned form the chat</strong></span>
+				<span><strong class="text-error-500">You are banned from the chat</strong></span>
 			{/if}
 		</div>
 	</div>
