@@ -1,4 +1,5 @@
-import { any, z } from "zod"
+import { message } from "sveltekit-superforms/server";
+import { any, string, z } from "zod"
 
 export const imageTypes = [
     'image/jpeg',
@@ -49,7 +50,7 @@ export const msgschema = z.object({
     user: z.string(),
 })
 
-const MAX_FILE_SIZE = 20 * 1024 * 1024;
+const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
 export const avatarValidation = z
     .instanceof(File)
@@ -108,3 +109,19 @@ export const ChangePassSchema = z.object({
 export const EmailValid = z
     .string({ required_error: "Email is required" })
     .email({ message: "This is not an Email" })
+
+const MAX_FILES_SIZE = 20 * 1024 * 1024;
+
+export const PostSchema = z.object({
+    subject: z
+        .string({ required_error: "Subject is required" })
+        .min(5)
+        .max(30),
+    Text: z
+        .string({ required_error: "Text is required" })
+        .min(5),
+    tags: z
+        .string()
+        .array()
+        .optional(),
+})

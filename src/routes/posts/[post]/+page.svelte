@@ -59,7 +59,7 @@
 		{#if tags}
 			<div class="mt-4">
 				{#each tags as tag}
-					<span class="bg-blue-500 text-white rounded-full px-2 py-1 text-sm mr-2">{tag}</span>
+					<span class="bg-blue-500 text-white rounded px-2 py-1 text-sm mr-2">{tag}</span>
 				{/each}
 			</div>
 		{/if}

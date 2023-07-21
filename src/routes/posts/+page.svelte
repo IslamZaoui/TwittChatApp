@@ -46,7 +46,7 @@
 	}
 
 	const modalComponent: ModalComponent = {
-		ref: NewPostModal,
+		ref: NewPostModal
 	};
 
 	function NewPost() {
