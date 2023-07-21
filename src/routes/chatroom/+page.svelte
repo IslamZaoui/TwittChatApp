@@ -66,6 +66,9 @@
 	}
 </script>
 <Toaster/>
+<svelte:head>
+	<title>Chat Room</title>
+</svelte:head>
 {#if data.currentUser.verified}
 	<div class="h-full grid grid-rows-[1fr_auto] gap-1">
 		<div

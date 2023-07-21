@@ -7,7 +7,9 @@
 	import logo from '$lib/favicon.png'
 	export let data: PageData;
 </script>
-
+<svelte:head>
+	<title>Twitt</title>
+</svelte:head>
 <div class="page py-24">
 	<div class="container max-w-xl flex flex-col items-center mx-auto text-center">
 		<div

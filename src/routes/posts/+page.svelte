@@ -67,6 +67,9 @@
 </script>
 
 <Modal />
+<svelte:head>
+	<title>Posts</title>
+</svelte:head>
 <AppShell>
 	<svelte:fragment slot="pageHeader">
 		<nav

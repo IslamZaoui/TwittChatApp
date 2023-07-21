@@ -28,7 +28,9 @@
 		}
 	}
 </script>
-
+<svelte:head>
+	<title>{data.post.subject}</title>
+</svelte:head>
 <div class="flex justify-center items-center h-full">
 	<div class="card shadow-md p-4 rounded-lg mb-4 w-full max-w-lg">
 		<div class="flex items-center mb-2">

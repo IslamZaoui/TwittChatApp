@@ -13,6 +13,9 @@
 	let tabSet: number = 0;
 </script>
 <Toaster />
+<svelte:head>
+	<title>Account</title>
+</svelte:head>
 <TabGroup
 	justify="justify-center"
 	active="variant-filled-primary"

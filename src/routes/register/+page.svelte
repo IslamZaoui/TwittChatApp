@@ -6,7 +6,9 @@
 	export let data: PageData;
 	const { form, errors, enhance, message } = superForm(data.form);
 </script>
-
+<svelte:head>
+	<title>Register</title>
+</svelte:head>
 <div class="container h-screen mx-auto flex flex-col justify-center items-center">
     <form method="POST" use:enhance class="card w-80 p-6 space-y-6 bg-white rounded-lg shadow-lg">
         <label class="label">

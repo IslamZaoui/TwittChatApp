@@ -28,6 +28,9 @@
 
 <Toaster />
 <Modal />
+<svelte:head>
+	<title>Login</title>
+</svelte:head>
 <div class="container h-screen mx-auto flex justify-center items-center">
 	<form method="POST" action="?/Login" use:enhance class="card w-80 p-6 space-y-6 bg-white rounded-lg shadow-lg">
 		<label class="label">
