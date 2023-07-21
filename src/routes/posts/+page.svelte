@@ -8,12 +8,8 @@
 		type ModalComponent,
 		type ModalSettings,
 		modalStore,
-
 		type PopupSettings,
-
 		popup
-
-
 	} from '@skeletonlabs/skeleton';
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
@@ -66,9 +62,10 @@
 	const popupHover: PopupSettings = {
 		event: 'hover',
 		target: 'popupHover',
-		placement: 'top'
+		placement: 'bottom'
 	};
 </script>
+
 <Modal />
 <AppShell>
 	<svelte:fragment slot="pageHeader">
@@ -80,8 +77,10 @@
 				name="chips"
 				placeholder="Search..."
 			/>
-			{#if data.currentUser.banned}
-				<button class="btn variant-filled-primary [&>*]:pointer-events-none" disabled use:popup={popupHover}>New Post</button>
+			{#if data.currentUser.banned || !data.currentUser.verified}
+				<button class="btn variant-filled-primary [&>*]:pointer-events-none" use:popup={popupHover}
+					>New Post</button
+				>
 			{:else}
 				<button class="btn variant-filled-primary" on:click={NewPost}>New Post</button>
 			{/if}
@@ -95,7 +94,7 @@
 		</nav>
 	</svelte:fragment>
 	<slot>
-		<div class="flex">
+		<div class="grid grid-cols-5 gap-4">
 			{#each posts as post}
 				<PostCard {post} />
 			{/each}
@@ -103,6 +102,11 @@
 	</slot>
 </AppShell>
 <div class="card p-4 variant-filled-secondary" data-popup="popupHover">
-	<p>Banned user can't post</p>
+	{#if !data.currentUser.verified}
+		<p>- Verify your Account first</p>
+	{/if}
+	{#if data.currentUser.banned}
+		<p>- Banned user can't post</p>
+	{/if}
 	<div class="arrow variant-filled-secondary" />
 </div>

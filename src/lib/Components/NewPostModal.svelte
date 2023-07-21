@@ -4,6 +4,7 @@
 	import { Avatar, FileButton, InputChip, modalStore } from '@skeletonlabs/skeleton';
 	import { superForm } from 'sveltekit-superforms/client';
 	import type { PageData } from '../../routes/posts/$types';
+	import toast, { Toaster } from 'svelte-french-toast';
 
 	export let parent: any;
 	let PostForm: HTMLFormElement;
@@ -15,11 +16,13 @@
 		await PostForm.requestSubmit();
 		modalStore.close();
 	}
-
+	function onInvalidHandler(event: any): void {
+		toast.error(`"${event.detail.input}" is an invalid value. Please try again!`)
+	}
 	const cBase = 'card p-4 w-modal shadow-xl space-y-4';
 	const cHeader = 'text-2xl font-bold';
 </script>
-
+<Toaster/>
 {#if $modalStore[0]}
 	<div class="modal-example-form {cBase}">
 		<header class={cHeader}>New Post</header>
@@ -48,6 +51,8 @@
 						class="input w-1/2 rounded"
 						bind:value={$form.subject}
 						placeholder="Subject..."
+						maxlength={30}
+						minlength={5}
 					/>
 				</h1>
 				{#if $errors.subject}<small class="text-red-500">{$errors.subject}</small>{/if}
@@ -56,6 +61,7 @@
 					bind:value={$form.Text}
 					name="Text"
 					placeholder="Text..."
+					minlength={5}
 				/>
 				{#if $errors.Text}<small class="text-red-500">{$errors.Text}</small>{/if}
 				<div class="mt-4">
@@ -71,6 +77,10 @@
 						bind:value={$form.tags}
 						chips="bg-blue-500 text-white rounded"
 						placeholder="Tags..."
+						max={5}
+						minlength={2}
+						maxlength={16}
+						on:invalid={onInvalidHandler}
 					/>
 					{#if $errors.tags}<small class="text-red-500">{$errors.tags}</small>{/if}
 				</div>
