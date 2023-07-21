@@ -131,7 +131,7 @@
 					>
 				</form>
 			{:else}
-				<span><strong class="text-error-500">You are banned form the chat</strong></span>
+				<span><strong class="text-error-500">You are banned from the chat</strong></span>
 			{/if}
 		</div>
 	</div>

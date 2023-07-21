@@ -5,7 +5,7 @@
 	export let post: Post;
 </script>
 
-<a class="card variant-filled-surface w-full h-full card-hover overflow-hidden rounded-lg shadow-lg m-3" href="/posts/{post.id}">
+<a class="card variant-filled-surface h-full card-hover overflow-hidden rounded-lg shadow-lg" href="/posts/{post.id}">
 	<header class="p-4 space-y-4">
 		<h6 class="text-blue-500 font-bold uppercase text-sm tracking-wide">{post.tags}</h6>
 		<h3 class="text-xl font-bold leading-tight" data-toc-ignore>{post.subject}</h3>

@@ -69,37 +69,49 @@
 <Modal />
 <AppShell>
 	<svelte:fragment slot="pageHeader">
-		<nav class="card p-2 m-2 rounded-none flex flex-row space-x-5">
-			<InputChip
-				rounded="rounded"
-				class="w-1/4"
-				bind:value={Searchlist}
-				name="chips"
-				placeholder="Search..."
-			/>
-			{#if data.currentUser.banned || !data.currentUser.verified}
-				<button class="btn variant-filled-primary [&>*]:pointer-events-none" use:popup={popupHover}
-					>New Post</button
-				>
-			{:else}
-				<button class="btn variant-filled-primary" on:click={NewPost}>New Post</button>
-			{/if}
+		<nav
+			class="card p-2 m-2 rounded-none flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-5"
+		>
+			<div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-5">
+				<InputChip
+					rounded="rounded"
+					class="w-full"
+					bind:value={Searchlist}
+					name="chips"
+					placeholder="Search..."
+				/>
+				{#if data.currentUser.banned || !data.currentUser.verified}
+					<button class="btn variant-filled-primary w-full sm:w-auto [&>*]:pointer-events-none">
+						New Post
+					</button>
+				{:else}
+					<button class="btn variant-filled-primary w-full sm:w-auto" on:click={NewPost}>
+						New Post
+					</button>
+				{/if}
+			</div>
 			<Paginator
 				bind:settings={pagesettings}
 				on:page={onPageChange}
 				on:amount={onAmountChange}
 				showFirstLastButtons={false}
 				showPreviousNextButtons={true}
+				class="w-full sm:w-auto mt-2 sm:mt-0"
 			/>
 		</nav>
 	</svelte:fragment>
-	<slot>
-		<div class="grid grid-cols-5 gap-4">
-			{#each posts as post}
-				<PostCard {post} />
-			{/each}
+
+	<div class="flex flex-col m-2">
+		<div class="overflow-y-auto h-screen">
+			<slot>
+				<div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
+					{#each posts as post}
+						<PostCard {post} />
+					{/each}
+				</div>
+			</slot>
 		</div>
-	</slot>
+	</div>
 </AppShell>
 <div class="card p-4 variant-filled-secondary" data-popup="popupHover">
 	{#if !data.currentUser.verified}
