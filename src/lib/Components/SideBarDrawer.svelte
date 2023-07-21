@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { drawerStore } from '@skeletonlabs/skeleton';
-	import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+	import { faPaperPlane, faSquareRss } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
 
 	export let currentuser: User | undefined;
@@ -21,6 +21,10 @@
 				<a href="/chatroom" on:click={drawerClose}>
 					<span class="m-1"><Fa icon={faPaperPlane} size="lg" /></span>
 					<span>Chat Room</span>
+				</a>
+				<a href="/posts" on:click={drawerClose}>
+					<span class="m-1"><Fa icon={faSquareRss} size="lg" /></span>
+					<span>Posts</span>
 				</a>
 			{/if}
 		</li>

@@ -24,3 +24,19 @@ export function avatarURL(id: string | undefined, avatar: string | undefined) {
 
   return ""
 }
+
+export function limitStringWithEllipsis(text: string | undefined): string | undefined {
+  const maxLength = 20
+  if (text === undefined)
+    return text
+  if (text.length <= maxLength) {
+    return text;
+  }
+
+  const trimmedText = text.substring(0, maxLength - 3);
+  return trimmedText + "... click to see more";
+}
+
+export function linkToPostFiles(filename:string,postid:string|undefined){
+  return env.PUBLIC_POCKETBASE_URL + "/api/files/posts/" + postid + "/" + filename
+}
