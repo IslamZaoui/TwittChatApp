@@ -40,3 +40,17 @@ export function limitStringWithEllipsis(text: string | undefined): string | unde
 export function linkToPostFiles(filename:string,postid:string|undefined){
   return env.PUBLIC_POCKETBASE_URL + "/api/files/posts/" + postid + "/" + filename
 }
+
+export function searchPosts(posts: Post[], searchQuery: string[]): Post[] {
+  const normalizedQueries = searchQuery.map((query) => query.toLowerCase().trim());
+  return posts.filter((post) => {
+    return (
+      normalizedQueries.some((query) => post.subject?.toLowerCase().includes(query)) ||
+      normalizedQueries.some((query) => post.expand?.user?.username.toLowerCase().includes(query)) ||
+      normalizedQueries.some((query) => post.Text?.toLowerCase().includes(query)) ||
+      (post.tags && normalizedQueries.some((query) => post.tags?.toLowerCase().includes(query)))
+    );
+  });
+}
+
+

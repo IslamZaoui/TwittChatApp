@@ -1,6 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import type { ListResult } from 'pocketbase';
+import { serializeNonPOJOs } from '$lib/utils';
 export const config = {
     runtime: 'edge',
 };
@@ -10,15 +11,17 @@ export const load = (async (event) => {
     if (!event.locals.pb.authStore.isValid) {
         throw redirect(303, '/')
     }
+    const pagenum = (event.url.searchParams.get('page') ?? 1 )as number
+    const pageitems = (event.url.searchParams.get('items') ?? 5 )as number
     const posts = async () => {
         try {
-            return (await event.locals.pb.collection('posts').getList(1, 50, {
+            return serializeNonPOJOs((await event.locals.pb.collection('posts').getList<Post>(pagenum, pageitems, {
                 expand: 'user',
                 sort: 'created'
-            })).items.map((msg) => msg.export() as Post)
+            })))
         }
         catch (_) {
-            return <Post[]>{}
+            return <ListResult<Post>>{}
         }
     }
     return { posts: posts() };
