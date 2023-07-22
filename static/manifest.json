@@ -12,13 +12,13 @@
     "theme_color": "#1A1C26",
     "icons": [
         {
-            "src": "icons/favicon.png",
+            "src": "favicon.png",
             "type": "image/png",
             "sizes": "512x512",
             "purpose": "maskable"
         },
         {
-            "src": "icons/favicon.png",
+            "src": "favicon.png",
             "type": "image/png",
             "sizes": "144x144",
             "purpose": "any"

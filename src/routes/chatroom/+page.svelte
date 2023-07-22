@@ -55,9 +55,9 @@
 	}
 
 	async function verify() {
-		const response = await fetch('/verification', {
+		const response = (await fetch('/verification', {
 			method: 'POST'
-		}).then((x) => x.json()) as { type: 'success' | 'error'; message: string };
+		}).then((x) => x.json())) as { type: 'success' | 'error'; message: string };
 		if (response.type == 'success') {
 			toast.success(response.message);
 		} else {
@@ -65,7 +65,8 @@
 		}
 	}
 </script>
-<Toaster/>
+
+<Toaster />
 <svelte:head>
 	<title>Chat Room</title>
 </svelte:head>
@@ -74,7 +75,7 @@
 		<div
 			bind:this={element}
 			on:keydown={(event) => event.key != 'Enter'}
-			class="max-h-[560px] p-4 overflow-y-auto space-y-4"
+			class="max-h-[80vh] p-4 overflow-y-auto space-y-4"
 		>
 			{#each messages as msg (msg.id)}
 				{#if msg.expand?.user?.username == data.currentUser.username}
@@ -83,9 +84,8 @@
 						<div class="card p-4 variant-soft-primary rounded-tl-none space-y-2">
 							<header class="flex justify-between items-center">
 								<p class="font-bold space-x-2">
-									<span>{msg.expand?.user?.username}</span>{#if msg.expand?.user?.banned}<small
-											class="text-red-500">Banned</small
-										>{/if}
+									<span>{msg.expand?.user?.username}</span>
+									{#if msg.expand?.user?.banned}<small class="text-red-500">Banned</small>{/if}
 								</p>
 								<small class="opacity-50">{msg.created}</small>
 							</header>
@@ -97,9 +97,8 @@
 						<div class="card p-4 variant-soft rounded-tr-none space-y-2">
 							<header class="flex justify-between items-center">
 								<p class="font-bold space-x-2">
-									<span>{msg.expand?.user?.username}</span>{#if msg.expand?.user?.banned}<small
-											class="text-red-500">Banned</small
-										>{/if}
+									<span>{msg.expand?.user?.username}</span>
+									{#if msg.expand?.user?.banned}<small class="text-red-500">Banned</small>{/if}
 								</p>
 								<small class="opacity-50">{msg.created}</small>
 							</header>
@@ -110,7 +109,7 @@
 				{/if}
 			{/each}
 		</div>
-		<div class="bg-surface-500/30 p-4">
+		<div class="bg-surface-500/30 p-4 w-full">
 			{#if !data.banned}
 				<form
 					data-sveltekit-replacestate
@@ -121,7 +120,7 @@
 					class="input-group input-group-divider grid-cols-[1fr_auto] rounded-container-token"
 				>
 					<input
-						class="bg-transparent input border-0 ring-0"
+						class="bg-transparent input border-0 ring-0 w-full"
 						name="text"
 						type="text"
 						required
@@ -129,9 +128,9 @@
 						bind:value={$form.text}
 						placeholder={$errors.text ? '' + $errors.text : 'Write a message...'}
 					/>
-					<button type="submit" class="variant-filled-primary space-x-2"
-						><Fa icon={faPaperPlane} /><span>Send</span></button
-					>
+					<button type="submit" class="variant-filled-primary space-x-2">
+						<Fa icon={faPaperPlane} /><span>Send</span>
+					</button>
 				</form>
 			{:else}
 				<span><strong class="text-error-500">You are banned from the chat</strong></span>
