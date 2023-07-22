@@ -70,8 +70,8 @@
 <svelte:head>
 	<title>Posts</title>
 </svelte:head>
-<AppShell>
-	<svelte:fragment slot="pageHeader">
+<div class="h-full grid grid-rows-[1fr_auto] gap-1">
+	<div>
 		<nav
 			class="card p-2 m-2 rounded-none flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-5"
 		>
@@ -102,20 +102,18 @@
 				class="w-full sm:w-auto mt-2 sm:mt-0"
 			/>
 		</nav>
-	</svelte:fragment>
+	</div>
 
-	<div class="flex flex-col m-2">
-		<div class="overflow-y-auto h-screen">
-			<slot>
-				<div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
-					{#each posts as post}
-						<PostCard {post} />
-					{/each}
-				</div>
-			</slot>
+	<div class="max-h-[80vh] overflow-y-auto space-y-4">
+		<div class="mx-5 h-screen">
+			<div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
+				{#each posts as post}
+					<PostCard {post} />
+				{/each}
+			</div>
 		</div>
 	</div>
-</AppShell>
+</div>
 <div class="card p-4 variant-filled-secondary" data-popup="popupHover">
 	{#if !data.currentUser.verified}
 		<p>- Verify your Account first</p>
