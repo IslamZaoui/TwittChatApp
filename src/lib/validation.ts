@@ -122,7 +122,6 @@ export const PostSchema = z.object({
         .min(5),
     tags: z
         .string()
-        .array()
         .max(5)
         .superRefine((tag, ctx) => {
             if (tag) {
@@ -140,5 +139,6 @@ export const PostSchema = z.object({
                 }
             }
         })
-        .optional(),
+        .optional()
+        .array(),
 })
