@@ -19,8 +19,8 @@
 	export let data: PageData;
 	let Searchlist: string[] = [];
 
-	let pagenum = ($page.url.searchParams.get('page') ?? data.pagenum) as number;
-	let pageitems = ($page.url.searchParams.get('items') ?? data.pageitems) as number;
+	let pagenum = ($page.url.searchParams.get('page') ?? data.page) as number;
+	let perpage = ($page.url.searchParams.get('items') ?? data.perpage) as number;
 
 	let posts: Post[] = [];
 
@@ -32,19 +32,19 @@
 
 	let pagesettings = {
 		offset: 0,
-		limit: data.pagenum,
-		size: data.pageitems,
+		limit: data.perpage,
+		size: data.totalitems,
 		amounts: [5, 10, 20, 50]
 	};
 
 	function onPageChange(e: CustomEvent): void {
 		pagenum = e.detail + 1;
-		goto('/posts?page=' + pagenum + '&items=' + pageitems);
+		goto('/posts?page=' + pagenum + '&items=' + perpage);
 	}
 
 	function onAmountChange(e: CustomEvent): void {
-		pageitems = e.detail;
-		goto('/posts?page=' + pagenum + '&items=' + pageitems);
+		perpage = e.detail;
+		goto('/posts?page=' + pagenum + '&items=' + perpage);
 	}
 
 	const modalComponent: ModalComponent = {
