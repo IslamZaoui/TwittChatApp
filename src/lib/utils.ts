@@ -53,4 +53,40 @@ export function searchPosts(posts: Post[], searchQuery: string[]): Post[] {
   });
 }
 
+export function FullPostInfo(posts: Post[], postLikes: PostLike[]): PostFull[] {
+	const postLikesCountMap: { [postId: string]: number } = {};
+	const postLikesTrueCountMap: { [postId: string]: number } = {};
 
+	// Count likes and views for each post
+	for (const like of postLikes) {
+		if (typeof like.post === "string") {
+			const postId = like.post;
+
+			if (postLikesCountMap[postId] === undefined) {
+				postLikesCountMap[postId] = 1;
+			} else {
+				postLikesCountMap[postId]++;
+			}
+
+			if (like.status === true) {
+				if (postLikesTrueCountMap[postId] === undefined) {
+					postLikesTrueCountMap[postId] = 1;
+				} else {
+					postLikesTrueCountMap[postId]++;
+				}
+			}
+		}
+	}
+
+	// Combine posts and likes data
+	const postFullList: PostFull[] = posts.map((post) => {
+		const postId = post.id || ""; // Set a default empty string if post.id is undefined
+		return {
+			...post,
+			likes: postLikesCountMap[postId] || 0,
+			views: postLikesTrueCountMap[postId] || 0,
+		};
+	});
+
+	return postFullList;
+}

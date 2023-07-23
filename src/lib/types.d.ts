@@ -38,3 +38,7 @@ interface PostLike {
 	status?: boolean;
 }
 
+interface PostFull extends Post {
+	likes?: number;
+	views?: number;
+}

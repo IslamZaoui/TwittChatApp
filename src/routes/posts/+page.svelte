@@ -19,21 +19,21 @@
 	export let data: PageData;
 	let Searchlist: string[] = [];
 
-	let pagenum = ($page.url.searchParams.get('page') ?? data.posts.page) as number;
-	let pageitems = ($page.url.searchParams.get('items') ?? data.posts.perPage) as number;
+	let pagenum = ($page.url.searchParams.get('page') ?? data.pagenum) as number;
+	let pageitems = ($page.url.searchParams.get('items') ?? data.pageitems) as number;
 
 	let posts: Post[] = [];
 
 	$: if (Searchlist.length != 0) {
-		posts = searchPosts(data.posts.items, Searchlist);
+		posts = searchPosts(data.posts, Searchlist);
 	} else {
-		posts = data.posts.items;
+		posts = data.posts;
 	}
 
 	let pagesettings = {
 		offset: 0,
-		limit: data.posts.perPage,
-		size: data.posts.totalItems,
+		limit: data.pagenum,
+		size: data.pageitems,
 		amounts: [5, 10, 20, 50]
 	};
 

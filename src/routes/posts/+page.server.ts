@@ -1,7 +1,7 @@
 import { redirect, type Actions, fail } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import type { ListResult } from 'pocketbase';
-import { serializeNonPOJOs } from '$lib/utils';
+import { serializeNonPOJOs,FullPostInfo } from '$lib/utils';
 import { superForm, superValidate } from 'sveltekit-superforms/client';
 import { PostSchema } from '$lib/validation';
 export const config = {
@@ -18,16 +18,23 @@ export const load = (async (event) => {
     const form = async () => await superValidate(event, PostSchema)
     const posts = async () => {
         try {
-            return serializeNonPOJOs((await event.locals.pb.collection('posts').getList<Post>(pagenum, pageitems, {
+            const posts = (await event.locals.pb.collection('posts').getList<Post>(pagenum, pageitems, {
                 expand: 'user',
                 sort: '-created'
-            })))
+            })).items
+            const posts_id = posts.map(post => post.id)
+            const postslikes = await event.locals.pb.collection('posts_likes').getFullList<PostLike>({
+                filter:posts_id.map((sku) => `post.id="${sku}"`).join("||")
+            })
+            const FullPosts = serializeNonPOJOs(FullPostInfo(posts,postslikes))
+
+            return FullPosts
         }
         catch (_) {
-            return <ListResult<Post>>{}
+            return <PostFull[]>{}
         }
     }
-    return { posts: posts(), form: form() };
+    return { posts: posts(), form: form(),pagenum,pageitems };
 }) satisfies PageServerLoad;
 
 export const actions = {

@@ -51,12 +51,25 @@ export const load = (async (event) => {
     catch (_) {
         youlike = <PostLike>{}
     }
+    let postviews
+    try {
+
+        postviews = (await event.locals.pb.collection('posts_likes').getFullList({
+            expand: 'post',
+            filter: `post.id="${event.params.post}"`
+        })).length
+    }
+    catch (error) {
+        console.log(error)
+        throw redirect(303, '/posts')
+    }
 
 
     return {
         post: post(),
         postlikes: postlikes(),
-        youlike
+        youlike,
+        postviews
     };
 }) satisfies PageServerLoad;
 

@@ -1,8 +1,14 @@
 <script lang="ts">
 	import { avatarURL } from "$lib/utils";
+	import { faEye, faHeart } from "@fortawesome/free-solid-svg-icons";
 	import { Avatar } from "@skeletonlabs/skeleton";
+	import { onMount } from "svelte";
+	import Fa from "svelte-fa";
 
-	export let post: Post;
+	export let post: PostFull;
+	let likeCount = post.views;
+	let viewCount = post.likes;
+
 </script>
 
 <a class="card variant-filled-surface h-full card-hover overflow-hidden rounded-lg shadow-lg" href="/posts/{post.id}">
@@ -18,4 +24,18 @@
 		</div>
 		<small class="text-gray-600">Posted on {post.created}</small>
 	</footer>
+	
+	<!-- Bottom Bar Grid -->
+	<div class="grid grid-cols-2 p-4 border-t border-gray-200">
+		<div class="flex items-center space-x-2">
+			<span class="flex items-center space-x-2">
+				<strong>{likeCount}</strong>
+				<Fa icon={faHeart} color="red" />
+			</span>
+		</div>
+		<div class="text-gray-600 flex items-center justify-end space-x-2">
+			<strong>{viewCount}</strong>
+			<Fa icon={faEye} />
+		</div>
+	</div>
 </a>
