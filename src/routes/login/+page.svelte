@@ -31,7 +31,7 @@
 <svelte:head>
 	<title>Login</title>
 </svelte:head>
-<div class="container h-screen mx-auto flex justify-center items-center">
+<div class="container h-full mx-auto flex justify-center items-center">
 	<form method="POST" action="?/Login" use:enhance class="card w-80 p-6 space-y-6 bg-white rounded-lg shadow-lg">
 		<label class="label">
 			<span class="font-semibold">Email</span>
@@ -63,6 +63,6 @@
 		</button>
 		<a href="/register" class="text-blue-500 hover:underline text-center">Don't have an account?</a
 		><br />
-		<a href="#" on:click={reset} class="text-blue-500 hover:underline text-center">Forget Password?</a>
+		<a href="#top" on:click={reset} class="text-blue-500 hover:underline text-center">Forget Password?</a>
 	</form>
 </div>

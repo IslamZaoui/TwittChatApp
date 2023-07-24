@@ -9,7 +9,7 @@
 <svelte:head>
 	<title>Register</title>
 </svelte:head>
-<div class="container h-screen mx-auto flex flex-col justify-center items-center">
+<div class="container h-full mx-auto flex flex-col justify-center items-center">
     <form method="POST" use:enhance class="card w-80 p-6 space-y-6 bg-white rounded-lg shadow-lg">
         <label class="label">
             <span class="  font-semibold">Username</span>
