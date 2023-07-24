@@ -70,41 +70,25 @@
 <svelte:head>
 	<title>Posts</title>
 </svelte:head>
-<div class="h-full grid grid-rows-[1fr_auto] gap-1">
-	<div>
-		<nav
-			class="card p-2 m-2 rounded-none flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-5"
-		>
-			<div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-5">
-				<InputChip
-					rounded="rounded"
-					class="w-full"
-					bind:value={Searchlist}
-					name="chips"
-					placeholder="Search..."
-				/>
-				{#if data.currentUser.banned || !data.currentUser.verified}
-					<button class="btn variant-filled-primary w-full sm:w-auto [&>*]:pointer-events-none">
-						New Post
-					</button>
-				{:else}
-					<button class="btn variant-filled-primary w-full sm:w-auto" on:click={NewPost}>
-						New Post
-					</button>
-				{/if}
-			</div>
-			<Paginator
-				bind:settings={pagesettings}
-				on:page={onPageChange}
-				on:amount={onAmountChange}
-				showFirstLastButtons={false}
-				showPreviousNextButtons={true}
-				class="w-full sm:w-auto mt-2 sm:mt-0"
-			/>
-		</nav>
-	</div>
+<div>
+	<nav class="card p-2 m-2 rounded flex space-x-2">
+		<InputChip
+			rounded="rounded"
+			class="w-full "
+			bind:value={Searchlist}
+			name="chips"
+			placeholder="Search..."
+		/>
+		<div class=" max-w-min">
+			{#if data.currentUser.banned || !data.currentUser.verified}
+				<button class="btn variant-filled-primary [&>*]:pointer-events-none"> New Post </button>
+			{:else}
+				<button class="btn variant-filled-primary" on:click={NewPost}> New Post </button>
+			{/if}
+		</div>
+	</nav>
 
-	<div class="max-h-[80vh] overflow-y-auto space-y-4">
+	<div class="md:max-h-[69vh] max-h-[63vh] overflow-y-auto">
 		<div class="mx-5 h-screen">
 			<div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
 				{#each posts as post}
@@ -113,6 +97,15 @@
 			</div>
 		</div>
 	</div>
+
+	<Paginator
+		bind:settings={pagesettings}
+		on:page={onPageChange}
+		on:amount={onAmountChange}
+		showFirstLastButtons={false}
+		showPreviousNextButtons={true}
+		class="card p-2 m-2 rounded"
+	/>
 </div>
 <div class="card p-4 variant-filled-secondary" data-popup="popupHover">
 	{#if !data.currentUser.verified}

@@ -122,23 +122,6 @@ export const PostSchema = z.object({
         .min(5),
     tags: z
         .string()
-        .max(5)
-        .superRefine((tag, ctx) => {
-            if (tag) {
-                if (tag.length > 16) {
-                    ctx.addIssue({
-                        code: z.ZodIssueCode.custom,
-                        message: 'one tag must be below 16 chars'
-                    });
-                }
-                if (tag.length < 2) {
-                    ctx.addIssue({
-                        code: z.ZodIssueCode.custom,
-                        message: 'one tag must be above 2 chars'
-                    });
-                }
-            }
-        })
-        .optional()
-        .array(),
+        .array()
+        .optional(),
 })

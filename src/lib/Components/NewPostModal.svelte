@@ -77,9 +77,9 @@
 						bind:value={$form.tags}
 						chips="bg-blue-500 text-white rounded"
 						placeholder="Tags..."
-						max={5}
+						max={4}
 						minlength={2}
-						maxlength={16}
+						maxlength={10}
 						on:invalid={onInvalidHandler}
 					/>
 					{#if $errors.tags}<small class="text-red-500">{$errors.tags}</small>{/if}

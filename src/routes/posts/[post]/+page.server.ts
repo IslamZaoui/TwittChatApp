@@ -1,4 +1,4 @@
-import { redirect, type Actions } from '@sveltejs/kit';
+import { redirect, type Actions, error, fail } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { serializeNonPOJOs } from '$lib/utils';
 export const config = {
@@ -93,5 +93,11 @@ export const actions: Actions = {
         catch (error) {
             console.log(error)
         }
+    },
+    delete: async (event) => {
+        const id = (await event.request.formData()).get('id') as string
+        try { await event.locals.pb.collection('posts').delete(id) }
+        catch (err) { return fail(400) }
+        throw redirect(303, '/posts')
     }
 };

@@ -48,6 +48,7 @@ export const actions = {
         const FData = await event.request.formData()
         const form = await superValidate(FData, PostSchema);
         const files = FData.getAll('files') as File[]
+        console.log(form.errors)
         if (!form.valid) return fail(400, { form });
 
         const post = new FormData();
