@@ -33,7 +33,6 @@
 			method="Post"
 			enctype="multipart/form-data"
 			class="flex justify-center items-center h-full"
-			on:submit={onFormSubmit}
 		>
 			<div class="card shadow-md p-4 rounded-lg mb-4 w-full max-w-lg">
 				<div class="flex items-center mb-2">
@@ -84,13 +83,13 @@
 					/>
 					{#if $errors.tags}<small class="text-red-500">{$errors.tags}</small>{/if}
 				</div>
-				<footer class="modal-footer my-5 {parent.regionFooter}">
-					<button class="btn {parent.buttonNeutral}" on:click={parent.onClose}
-						>{parent.buttonTextCancel}</button
-					>
-					<button class="btn {parent.buttonPositive}" type="submit">Post It</button>
-				</footer>
 			</div>
 		</form>
+		<footer class="modal-footer my-5 {parent.regionFooter}">
+			<button class="btn {parent.buttonNeutral}" on:click={parent.onClose}
+				>{parent.buttonTextCancel}</button
+			>
+			<button class="btn {parent.buttonPositive}" type="submit" on:click={onFormSubmit}>Post It</button>
+		</footer>
 	</div>
 {/if}
