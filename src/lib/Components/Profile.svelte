@@ -9,10 +9,10 @@
 	} from '@skeletonlabs/skeleton';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import ChangeAvatar from './ChangeAvatar.svelte';
-	import type { ActionData } from '../../routes/account/$types';
+	import type { ActionData, PageData } from '../../routes/[account]/$types';
 	import { faEdit } from '@fortawesome/free-solid-svg-icons';
 	import Fa from 'svelte-fa';
-	import type { PageData } from '../../routes/account/$types';
+	import PostCard from './PostCard.svelte';
 
 	export let form: ActionData;
 	export let data: PageData;
@@ -28,7 +28,7 @@
 	$: if (form?.success) {
 		toast.success(form?.success);
 	}
-
+	data.Posts;
 	const modalComponentRegistry: Record<string, ModalComponent> = {
 		modalComponentOne: {
 			ref: ChangeAvatar
@@ -44,29 +44,39 @@
 </script>
 
 <Modal components={modalComponentRegistry} />
-<div class="flex flex-col">
-	<div class="container mx-auto px-4 py-8">
-		<div class="flex flex-col space-y-5 items-center justify-between mb-4">
-			<div class="flex items-center">
-				<div class="relative inline-block mr-4">
+
+<div>
+	<div class="flex flex-col space-y-5 items-center justify-between mb-4">
+		<div class="flex items-center">
+			<div class="relative inline-block mr-4">
+				{#if data.ProfileUser.username === data.currentUser.username}
 					<span class="badge-icon variant-filled-warning absolute -top-1 -right-1 z-10">
 						<button on:click={changeavatar}><Fa icon={faEdit} /></button>
 					</span>
-					<Avatar
-						src={avatarURL(data.currentUser.id, data.currentUser.avatar)}
-						initials={data.currentUser.username}
-						width="w-20"
-					/>
-				</div>
-				<h1 class="text-xl font-bold">{data.currentUser.username}</h1>
+				{/if}
+				<Avatar
+					src={avatarURL(data.ProfileUser.id, data.ProfileUser.avatar)}
+					initials={data.ProfileUser.username}
+					width="w-20"
+				/>
 			</div>
-			<div class="text-sm">
-				Account Status: <span class={!data.currentUser.banned ? 'text-green-500' : 'text-red-500'}
-					>{!data.currentUser.banned ? 'Active' : 'Banned'}</span
-				>,
-				<span class={data.currentUser.verified ? 'text-green-500' : 'text-red-500'}
-					>{data.currentUser.verified ? 'Verified' : 'Not Verified'}</span
-				>
+			<h1 class="text-xl font-bold">{data.ProfileUser.username}</h1>
+		</div>
+		<div class="text-sm">
+			Account Status: <span class={!data.ProfileUser.banned ? 'text-green-500' : 'text-red-500'}
+				>{!data.ProfileUser.banned ? 'Active' : 'Banned'}</span
+			>,
+			<span class={data.ProfileUser.verified ? 'text-green-500' : 'text-red-500'}
+				>{data.ProfileUser.verified ? 'Verified' : 'Not Verified'}</span
+			>
+		</div>
+	</div>
+	<div class="md:max-h-[60vh] max-h-[63vh] overflow-y-auto">
+		<div class="mx-5 h-screen">
+			<div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
+				{#each data.Posts as post}
+					<PostCard {post} />
+				{/each}
 			</div>
 		</div>
 	</div>

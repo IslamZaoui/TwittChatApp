@@ -28,7 +28,7 @@
 				<LightSwitch />
 				<a
 					class="btn btn-sm variant-filled-primary hover:variant-soft-primary hidden md:block"
-					href="/account"
+					href="/{currentuser.username}"
 				>
 					Account
 				</a>
