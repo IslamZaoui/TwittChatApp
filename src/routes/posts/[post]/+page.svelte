@@ -63,7 +63,7 @@
 					alt={data.post.expand?.user?.username}
 					width="w-10"
 				/>
-				<h3 class="font-bold ml-2">{data.post.expand?.user?.username}</h3>
+				<a href='/{data.post.expand?.user?.username}'><h3 class="font-bold ml-2">{data.post.expand?.user?.username}</h3></a>
 			</div>
 			<div class="text-gray-600 flex items-center justify-end space-x-1 col-span-1">
 				<strong>{views}</strong>

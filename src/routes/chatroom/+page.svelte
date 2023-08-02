@@ -75,7 +75,7 @@
 		<div
 			bind:this={element}
 			on:keydown={(event) => event.key != 'Enter'}
-			class="max-h-[80vh] p-4 overflow-y-auto space-y-4"
+			class="max-h-[80vh] p-6 overflow-y-auto space-y-4"
 		>
 			{#each messages as msg (msg.id)}
 				{#if msg.expand?.user?.username == data.currentUser.username}
@@ -84,7 +84,7 @@
 						<div class="card p-4 variant-soft-primary rounded-tl-none space-y-2">
 							<header class="flex justify-between items-center">
 								<p class="font-bold space-x-2">
-									<span>{msg.expand?.user?.username}</span>
+									<a href="/{msg.expand?.user?.username}">{msg.expand?.user?.username}</a>
 									{#if msg.expand?.user?.banned}<small class="text-red-500">Banned</small>{/if}
 								</p>
 								<small class="opacity-50">{msg.created}</small>
@@ -95,9 +95,9 @@
 				{:else}
 					<div class="grid grid-cols-[1fr_auto] gap-2">
 						<div class="card p-4 variant-soft rounded-tr-none space-y-2">
-							<header class="flex justify-between items-center">
+							<header class="flex justify-between items-center flex-row-reverse">
 								<p class="font-bold space-x-2">
-									<span>{msg.expand?.user?.username}</span>
+									<a href="/{msg.expand?.user?.username}">{msg.expand?.user?.username}</a>
 									{#if msg.expand?.user?.banned}<small class="text-red-500">Banned</small>{/if}
 								</p>
 								<small class="opacity-50">{msg.created}</small>

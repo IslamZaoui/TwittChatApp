@@ -20,7 +20,7 @@
 	<footer class="p-4 flex flex-col justify-start items-start space-y-3">
 		<div class="flex items-center space-x-2">
 			<Avatar src={avatarURL(post.expand?.user?.id, post.expand?.user?.avatar)} width="w-8" />
-			<h6 class="text-sm font-bold">{post.expand?.user?.username}</h6>
+			<a href="/{post.expand?.user?.username}"><h6 class="text-sm font-bold">{post.expand?.user?.username}</h6></a>
 		</div>
 		<small class="text-gray-600">Posted on {post.created}</small>
 	</footer>
