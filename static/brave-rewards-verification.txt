@@ -1,0 +1,4 @@
+This is a Brave Creators publisher verification file.
+
+Domain: twittchat.vercel.app
+Token: 91e0f9e30247de4c1249732f3e4782cd9dd440b0be5f7072fc69b277fcf0642d
